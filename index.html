@@ -64,6 +64,46 @@ function ac(html) {
   document.close();
 }
 function hata(yazi) { var h = document.getElementById('hata'); h.textContent = yazi; h.style.display = 'block'; }
+
+/* Talebe link: #d=<j|z><base64url> carries the talebe's own data (z = deflate). It never reaches the server.
+   The page puts it into takip.html (the takip form) and opens it here. */
+var SABLON = 'acici-sablon';
+function bayt64(s) {
+  s = s.replace(/-/g, '+').replace(/_/g, '/');
+  while (s.length % 4) s += '=';
+  var b = atob(s), u = new Uint8Array(b.length);
+  for (var i = 0; i < b.length; i++) u[i] = b.charCodeAt(i);
+  return u;
+}
+function baglantiVerisi(kod) {
+  var u = bayt64(kod.slice(1));
+  if (kod[0] === 'j') return Promise.resolve(new TextDecoder().decode(u));
+  if (kod[0] !== 'z' || typeof DecompressionStream !== 'function') return Promise.reject(new Error('eski'));
+  return new Response(new Blob([u]).stream().pipeThrough(new DecompressionStream('deflate'))).text();
+}
+function sablonAl() {
+  return fetch('takip.html', { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error('sablon'); return r.text(); })
+    .then(function (t) { try { localStorage.setItem(SABLON, t); } catch (e) {} return t; })
+    .catch(function (e) { var t = null; try { t = localStorage.getItem(SABLON); } catch (x) {} if (t) return t; throw e; });
+}
+var m = /[#&]d=([^&]+)/.exec(location.hash);
+if (m) {
+  document.querySelector('main').innerHTML = '<div class="kart"><div class="et">Kırklar Akademi</div><h1>Takip dosyası açılıyor…</h1><p id="durum">Lütfen bekleyiniz.</p></div>';
+  Promise.all([baglantiVerisi(m[1]), sablonAl()]).then(function (s) {
+    var j = JSON.parse(s[0]);
+    if (!j || j.mod !== 'veli') throw new Error('veri');
+    var json = JSON.stringify(j).replace(/</g, '\\u003c');
+    var html = s[1].replace(/(<script id="veri" type="application\/json">)[\s\S]*?(<\/script>)/, function (_, a, b) { return a + json + b; });
+    document.title = (j.ad ? j.ad + ' · ' : '') + 'Takip Dosyası';
+    ac(html);
+  }).catch(function (e) {
+    document.getElementById('durum').textContent = e && e.message === 'eski'
+      ? 'Telefonunuzun tarayıcısı eski olduğu için dosya açılamadı. Lütfen tarayıcınızı güncelleyiniz ya da hocanızdan dosyanın kendisini isteyiniz.'
+      : 'Dosya açılamadı. İnternet bağlantınızı kontrol edip bağlantıya tekrar dokununuz; olmazsa hocanızdan yeni bağlantı isteyiniz.';
+  });
+  return;
+}
+
 var kayitli = null;
 try { kayitli = localStorage.getItem(ANAHTAR); } catch (e) {}
 if (kayitli) {
