@@ -451,7 +451,7 @@ td.b-gun small{color:var(--soluk);font-size:7.3pt}
 <div id="tarayici-uyari" style="margin:12px;padding:14px 16px;border-radius:12px;background:#fff4e5;border:2px solid #e08a45;color:#1e3550;font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif">
 <b style="display:block;font-size:17px;margin-bottom:6px">Bu dosya şu an önizlemede açıldı</b>
 Önizlemede işaretleme yapılamaz ve girdikleriniz kaydedilmez. Dosyayı tarayıcıda açınız:<br>
-<b>Android:</b> sağ üstteki üç noktaya dokunun, "Birlikte aç" veya "Tarayıcıda aç" deyip <b>Chrome</b>'u seçin.<br><b>iPhone</b> (veya Android'da açılmazsa): dosyayı telefona kaydedin (iPhone'da paylaş simgesi, "Dosyalar'a Kaydet"), sonra şu sayfayı açıp dosyayı seçin: <a href="https://kebigungorenkirklarproje-dijital.github.io/ara-tatil-takip/" style="color:#2a5585;font-weight:700;word-break:break-all">kebigungorenkirklarproje-dijital.github.io/ara-tatil-takip</a>
+<b>Android:</b> sağ üstteki üç noktaya dokunun, "Birlikte aç" veya "Tarayıcıda aç" deyip <b>Chrome</b>'u seçin.<br><b>iPhone</b> (veya Android'da açılmazsa): dosyayı telefona kaydedin (iPhone'da paylaş simgesi, "Dosyalar'a Kaydet"), sonra şu sayfayı açıp dosyayı seçin: <a href="https://kebi.kirklaryurdu.com/ara-tatil/" style="color:#2a5585;font-weight:700;word-break:break-all">kebi.kirklaryurdu.com/ara-tatil</a>
 </div>
 <script>addEventListener('DOMContentLoaded', function () { try { localStorage.setItem('__deneme', '1'); localStorage.removeItem('__deneme'); var u = document.getElementById('tarayici-uyari'); if (u) u.remove(); } catch (e) {} });</script>
 <div class="kap" id="uygulama"></div>
@@ -1237,7 +1237,7 @@ function talebeDosyasi(src, kayit, toplu) {
 }
 /* ---------- Talebe link: the veli copy travels in the link's #part (never sent to the server) and the
    page at BAGLANTI_ADRES opens it in the browser, so the veli needs no file. ---------- */
-const BAGLANTI_ADRES = 'https://kebigungorenkirklarproje-dijital.github.io/ara-tatil-takip/';
+const BAGLANTI_ADRES = 'https://kebi.kirklaryurdu.com/ara-tatil/';
 async function baglantiKodu(metin) {
   let bayt = new TextEncoder().encode(metin), on = 'j';
   if (typeof CompressionStream === 'function') {
